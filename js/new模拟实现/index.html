@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>new模拟实现</title>
+</head>
+<body>
+<script type="application/javascript">
+  // 定一个构造函数
+  function Person(name, age) {
+    this.name = name
+    this.age = age
+    // 构造函数又返回值(对象类型) 返回该对象 实例中只能访问返回对象的属性
+    // return { name: 'ydc', age: 25 }
+    // 返回基本类型 会被忽略
+    return 'ydc'
+  }
+  // 在Person构造函数的原型上添加一个方法
+  Person.prototype.say = function () {
+    console.log('my name is ' + this.name, ' age is ' + this.age)
+  }
+
+  // 创建一个实例
+  var person = new Person('jack', 20)
+  console.log(person)
+  // 访问原型对象上的方法/属性
+  person.say()
+  // 访问实例属性
+  console.log(person.name) // jack
+  console.log(person.age) // 20
+
+
+  /**
+   * 模拟new实现
+   * 1：创建一个空对象
+   * 2：将创建的空对象的原型型指向构造函数的原型
+   * 3：改变构造函数中的this指向该空对象
+   */
+  function CreateFactory() {
+    // 1：创建一个空对象
+    // var obj = new Object()
+    var obj = Object.create(Object.prototype)
+    // 2：将对象的原型指向构造函数的原型
+    obj.__proto__ = Constructor.prototype
+    // 3：将构造函数的this指向该对象(obj)
+    var ret = Constructor.apply(obj, arguments)
+    return typeof ret === 'object' ? ret : obj
+  }
+
+  var person2 = CreateFactory(Person, 'tom', 30)
+  console.log(person2)
+  console.log(person2.name)
+  console.log(person2.age)
+  person2.say()
+</script>
+</body>
+</html>

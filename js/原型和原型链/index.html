@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>原型和原型链</title>
+</head>
+<body>
+<script type="application/javascript">
+  /**
+   * 原型对象
+   *  每个函数都一个prototype属性，它默认指向一个空对象（即原型对象）
+   */
+  console.log(Date.prototype)
+  function Fun() {}
+  console.log(Fun.prototype)
+  // console.log(Fun.__proto__)
+  var obj = {}
+  console.log(obj.prototype) // undefined
+  // 原型对象中有一个constructor属性，它指向函数本身
+  console.log(Date.prototype.constructor === Date) // true
+  // 给函数的原型添加方法
+  Fun.prototype.test = function () {
+    console.log('test()')
+  }
+  var fun = new Fun()
+  // 调用函数
+  fun.test() // test()
+
+  /**
+   * 显示原型（prototype）和隐式原型（__proto__）
+   *  构造函数的显示原型等于实例对象的隐式原型
+   */
+  function Person() {}
+  var person = new Person()
+  console.log(Person.prototype === person.__proto__) // true
+  console.log(Function.prototype.__proto__ === Object.prototype)
+</script>
+</body>
+</html>
