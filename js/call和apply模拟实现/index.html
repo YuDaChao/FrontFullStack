@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>call和apply模拟实现</title>
+</head>
+<body>
+<script type="application/javascript">
+  var bar = {
+    value: 1
+  }
+  var foo = function () {
+    console.log(this.value)
+  }
+  foo.call(bar) // call 改变了this指向 指向bar
+
+  // 模拟实现
+  // 没有参数的情况
+  Function.prototype.call2 = function (context) {
+    // 获取调用call的函数 这个函数就是这里的this
+    context.fn = this
+    context.fn()
+    // 删除 fn
+    delete context.fn
+  }
+  foo.call2(bar)
+
+  // 有参数的情况
+  var foo1 = function (name, age) {
+    console.log(name)
+    console.log(age)
+    console.log(this.value)
+  }
+  Function.prototype.call3 = function (context) {
+    // 当传入的context为null时 默认this指向window
+    context = context | window
+    context.fn = this
+    // 获取参数
+    // 可以通过 arguments 这个类数组获取
+    var args = []
+    for (var i = 1; i < arguments.length; i++) {
+      args.push("arguments[" + i + "]")
+    }
+    eval('context.fn(' + args + ')')
+    delete context.fn
+  }
+  foo1.call3(bar, 'ydc', 25)
+</script>
+</body>
+</html>
