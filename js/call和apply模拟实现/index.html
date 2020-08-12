@@ -33,7 +33,7 @@
   }
   Function.prototype.call3 = function (context) {
     // 当传入的context为null时 默认this指向window
-    context = context | window
+    context = context || window
     context.fn = this
     // 获取参数
     // 可以通过 arguments 这个类数组获取
@@ -45,6 +45,31 @@
     delete context.fn
   }
   foo1.call3(bar, 'ydc', 25)
+
+  // apply模拟实现
+  var zoo = {
+    value: 2
+  }
+  var jaz = function (a, b) {
+    console.log(a, b)
+    console.log('apply: ', this.value)
+  }
+   jaz.apply(zoo, [20, 40]) // apply: 2
+
+  Function.prototype.apply2 = function (context, arr) {
+    context.fn = this
+    if (!arr) {
+      context.fn()
+    } else {
+      var args = []
+      for (var i = 0, len = arr.length; i < len; i++) {
+        args.push('arr[' + i + ']')
+      }
+      eval('context.fn(' + args + ')')
+    }
+    delete context.fn
+  }
+  jaz.apply2(zoo, [1, 2, 3])
 </script>
 </body>
 </html>
