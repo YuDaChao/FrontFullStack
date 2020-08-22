@@ -41,6 +41,7 @@
     // var obj = new Object()
     var obj = Object.create(Object.prototype)
     // 2：将对象的原型指向构造函数的原型
+    var Constructor = [].shift.call(arguments)
     obj.__proto__ = Constructor.prototype
     // 3：将构造函数的this指向该对象(obj)
     var ret = Constructor.apply(obj, arguments)
